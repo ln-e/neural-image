@@ -1,2 +1,5 @@
-data_out/
-data.pkl
+/data_out/*
+/preview/*
+/dataset.h5
+
+!.gitkeep

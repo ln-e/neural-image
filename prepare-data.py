@@ -1,7 +1,6 @@
+import h5py
 import numpy as np
-import imageio
-from scipy import ndimage, misc
-import pickle
+from keras.preprocessing.image import load_img, img_to_array
 
 data = (
     ((1, 0, 1, 0), '10007_big.png'),
@@ -11,13 +10,13 @@ data = (
 
 imList = []
 for vector, imageName in data:
-    image = ndimage.imread('data/' + imageName, mode='RGB')
-    image = misc.imresize(image, (150, 150))
-    # imageio.imwrite('data_out/' + imageName, image, 'png')
+    image = load_img('data/' + imageName).resize((120, 120))
+    image = img_to_array(image)
     imList.append(image)
 
 
 imTensor = np.array(imList).astype('uint8')
-with open('data.pkl', 'wb') as f:
-    pickle.dump(imTensor, f)
+with h5py.File('dataset.h5', 'w') as hf:
+    hf.create_dataset('dataset',  data=imTensor)
+
 print(imTensor.shape)
