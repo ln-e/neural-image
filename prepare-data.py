@@ -1,12 +1,9 @@
+import json
 import h5py
 import numpy as np
 from keras.preprocessing.image import load_img, img_to_array
 
-data = (
-    ((1, 0, 1, 0), '10007_big.png'),
-    ((0, 1, 1, 0), '10007_grey.png'),
-    ((1, 0, 0, 0), '10007_small.png'),
-)
+data = json.load(open('raw-data.json'))
 
 imList = []
 for vector, imageName in data:
