@@ -1,5 +1,7 @@
 /data_out/*
 /preview/*
+/saved_models/*
 /dataset.h5
+/__pycache__/
 
 !.gitkeep

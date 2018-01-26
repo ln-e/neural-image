@@ -1,35 +1,30 @@
 import imageio
 from keras.preprocessing.image import ImageDataGenerator
 import h5py
+from fabrikant_dataset import get_dataset, get_datagen
 
-with h5py.File('dataset.h5', 'r') as hf:
-    imTensor = hf['dataset'][:]
+(train_image, train_vector), (test_image, test_vector) = get_dataset()
 
 i = 0
-for image in imTensor:
+for image in train_image:
     i = i + 1
     imageio.imwrite('data_out/' + str(i) + '.png', image, 'png')
 
 
-datagen = ImageDataGenerator(
-        rotation_range=40,
-        width_shift_range=0.2,
-        height_shift_range=0.2,
-        shear_range=0.2,
-        zoom_range=0.2,
-        horizontal_flip=True,
-        fill_mode='nearest')
+datagen = get_datagen()
 
 
 # пример того как будет работать аугументация
 i = 0
-for batch in datagen.flow(imTensor,
+for batch in datagen.flow(train_image,
+                          y=train_vector,
                           batch_size=1,
                           save_to_dir='preview',
                           save_prefix='example_',
                           save_format='jpeg'):
     i += 1
-    if i > 20:
+    if i > 15:
         break
 
-print(imTensor.shape)
+print(train_image.shape, train_vector.shape)
+print('done')
