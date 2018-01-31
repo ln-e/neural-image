@@ -5,10 +5,10 @@ from keras.layers import Conv2D, Activation, MaxPooling2D, Flatten, Dense, Dropo
 from fabrikant_dataset import get_dataset, get_datagen
 
 batch_size = 32
-num_classes = 4
+num_classes = 17
 epochs = 100
 data_augmentation = True
-save_augmentated = True
+save_augmentated = False
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_fabrikant_trained_model.h5'
 
@@ -39,7 +39,7 @@ model.add(Dense(512))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 model.add(Dense(num_classes))
-model.add(Activation('sigmoid'))
+model.add(Activation('sigmoid',))
 
 # opt = keras.optimizers.rmsprop(lr=0.0001, decay=1e-6)
 model.compile(loss='binary_crossentropy',
