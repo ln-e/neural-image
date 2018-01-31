@@ -1,14 +1,12 @@
 import imageio
-from keras.preprocessing.image import ImageDataGenerator
-import h5py
 from fabrikant_dataset import get_dataset, get_datagen
 
 (train_image, train_vector), (test_image, test_vector) = get_dataset()
 
-i = 0
-for image in train_image:
-    i = i + 1
-    imageio.imwrite('data_out/' + str(i) + '.png', image, 'png')
+# i = 0
+# for image in train_image:
+#     i = i + 1
+#     imageio.imwrite('data_out/' + str(i) + '.png', image, 'png')
 
 
 datagen = get_datagen()
@@ -23,7 +21,7 @@ for batch in datagen.flow(train_image,
                           save_prefix='example_',
                           save_format='jpeg'):
     i += 1
-    if i > 15:
+    if i > 50:
         break
 
 print(train_image.shape, train_vector.shape)

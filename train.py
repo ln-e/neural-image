@@ -9,7 +9,6 @@ num_classes = 4
 epochs = 100
 data_augmentation = True
 save_augmentated = True
-num_predictions = 20
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_fabrikant_trained_model.h5'
 

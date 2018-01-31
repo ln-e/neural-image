@@ -11,9 +11,9 @@ test_data_list = []
 test_label_list = []
 i = 0
 for vector, imageName in data:
-    image = load_img('data/' + imageName).resize((120, 120))
+    image = load_img('data/' + imageName).resize((224, 224))
     image = img_to_array(image)
-    if i % 2 == 0:
+    if i % 5 != 0:
         train_data_list.append(image)
         train_label_list.append(vector)
     else:
