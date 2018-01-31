@@ -40,10 +40,10 @@ model.add(Dense(512))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 model.add(Dense(num_classes))
-model.add(Activation('softmax'))
+model.add(Activation('sigmoid'))
 
 # opt = keras.optimizers.rmsprop(lr=0.0001, decay=1e-6)
-model.compile(loss='categorical_crossentropy',
+model.compile(loss='binary_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
 
