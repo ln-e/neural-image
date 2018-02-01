@@ -5,7 +5,7 @@ from keras.layers import Conv2D, Activation, MaxPooling2D, Flatten, Dense, Dropo
 from fabrikant_dataset import get_dataset, get_datagen
 
 batch_size = 32
-num_classes = 17
+num_classes = 8
 epochs = 100
 data_augmentation = True
 save_augmentated = False
