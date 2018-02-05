@@ -13,7 +13,7 @@ i = 0
 for vector, imageName in data:
     image = load_img(
         'data/' + imageName,
-        target_size=(176, 176),
+        target_size=(144, 144),
         interpolation='bilinear'
     )
 
