@@ -33,7 +33,7 @@ model.add(Dense(256, activation='relu'))
 model.add(Dropout(0.35))
 model.add(Dense(num_classes, activation='sigmoid'))
 
-sgd = SGD(lr=0.0005)
+sgd = SGD(lr=0.005)
 model.compile(loss='binary_crossentropy',
               optimizer=sgd,
               metrics=['accuracy'])
@@ -69,7 +69,7 @@ print('Test loss:', scores[0])
 print('Test accuracy:', scores[1])
 
 # Save model and weights
-if scores[1] > 0.865:
+if scores[1] > 0.885:
     if not os.path.isdir(save_dir):
         os.makedirs(save_dir)
     model_path = os.path.join(save_dir, model_name)
