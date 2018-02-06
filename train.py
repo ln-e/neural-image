@@ -7,7 +7,7 @@ from fabrikant_dataset import get_dataset, get_datagen
 
 batch_size = 16
 num_classes = 8
-epochs = 25
+epochs = 20
 data_augmentation = True
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_fabrikant_trained_model.h5'
@@ -21,24 +21,21 @@ print(x_test.shape[0], 'test samples')
 model = Sequential()
 
 model.add(Conv2D(32, (3, 3), input_shape=x_train.shape[1:], activation='relu'))
+model.add(Conv2D(32, (3, 3), input_shape=x_train.shape[1:], activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.2))
 
 model.add(Conv2D(64, (3, 3), padding='same', activation='relu'))
+model.add(Conv2D(64, (3, 3), activation='relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
-model.add(Conv2D(128, (3, 3), padding='same', activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.3))
-
 model.add(Flatten())
 model.add(Dense(512, activation='relu'))
-model.add(Dropout(0.33))
+model.add(Dropout(0.5))
 model.add(Dense(num_classes, activation='sigmoid'))
 
-# opt = keras.optimizers.rmsprop(lr=0.0001, decay=1e-6)
-sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+sgd = SGD(lr=0.00001)
 model.compile(loss='binary_crossentropy',
               optimizer=sgd,
               metrics=['accuracy'])
@@ -58,6 +55,7 @@ else:
     # Compute quantities required for feature-wise normalization
     # (std, mean, and principal components if ZCA whitening is applied).
     datagen.fit(x_train)
+    datagen.rotation_range = 180
 
     generator = datagen.flow(x_train, y_train, batch_size=batch_size)
 
@@ -67,14 +65,16 @@ else:
                         validation_data=(x_test, y_test),
                         workers=2)
 
-# Save model and weights
-if not os.path.isdir(save_dir):
-    os.makedirs(save_dir)
-model_path = os.path.join(save_dir, model_name)
-model.save(model_path)
-print('Saved trained model at %s ' % model_path)
 
 # Score trained model.
 scores = model.evaluate(x_test, y_test, verbose=1)
 print('Test loss:', scores[0])
 print('Test accuracy:', scores[1])
+
+# Save model and weights
+if scores[1] > 0.83:
+    if not os.path.isdir(save_dir):
+        os.makedirs(save_dir)
+    model_path = os.path.join(save_dir, model_name)
+    model.save(model_path)
+    print('Saved trained model at %s ' % model_path)
