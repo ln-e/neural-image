@@ -5,9 +5,9 @@ from keras.optimizers import SGD
 
 from fabrikant_dataset import get_dataset, get_datagen
 
-batch_size = 16
+batch_size = 32
 num_classes = 8
-epochs = 20
+epochs = 100
 data_augmentation = True
 save_dir = os.path.join(os.getcwd(), 'saved_models')
 model_name = 'keras_fabrikant_trained_model.h5'
@@ -21,21 +21,19 @@ print(x_test.shape[0], 'test samples')
 model = Sequential()
 
 model.add(Conv2D(32, (3, 3), input_shape=x_train.shape[1:], activation='relu'))
-model.add(Conv2D(32, (3, 3), input_shape=x_train.shape[1:], activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(MaxPooling2D(pool_size=(2, 2)))  # 144 -> 77
 model.add(Dropout(0.2))
 
-model.add(Conv2D(64, (3, 3), padding='same', activation='relu'))
-model.add(Conv2D(64, (3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(32, (3, 3), padding='same', activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))  # 77 -> 38
 model.add(Dropout(0.25))
 
 model.add(Flatten())
-model.add(Dense(512, activation='relu'))
-model.add(Dropout(0.5))
+model.add(Dense(256, activation='relu'))
+model.add(Dropout(0.35))
 model.add(Dense(num_classes, activation='sigmoid'))
 
-sgd = SGD(lr=0.00001)
+sgd = SGD(lr=0.0005)
 model.compile(loss='binary_crossentropy',
               optimizer=sgd,
               metrics=['accuracy'])
@@ -55,7 +53,6 @@ else:
     # Compute quantities required for feature-wise normalization
     # (std, mean, and principal components if ZCA whitening is applied).
     datagen.fit(x_train)
-    datagen.rotation_range = 180
 
     generator = datagen.flow(x_train, y_train, batch_size=batch_size)
 
@@ -72,7 +69,7 @@ print('Test loss:', scores[0])
 print('Test accuracy:', scores[1])
 
 # Save model and weights
-if scores[1] > 0.83:
+if scores[1] > 0.865:
     if not os.path.isdir(save_dir):
         os.makedirs(save_dir)
     model_path = os.path.join(save_dir, model_name)
